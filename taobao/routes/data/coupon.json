@@ -1,0 +1,5 @@
+{
+  "Code": "000",
+  "Message": "操作成功！",
+  "Result": "{\"inAvailableCouponList\":[],\"availableCouponList\":[{\"backPic\":\"\",\"couponValue\":\"38\",\"couponType\":\"3\",\"recordId\":\"39226\",\"couponCode\":\"BMXJJ\",\"remainNum\":null,\"startTime\":null,\"endTime\":null,\"storeLimitTips\":null,\"useRangeTips\":null,\"title\":\"线上线下均可使用\",\"useCouponTerminal\":\"2\",\"useCouponTerminalTips\":\"线上线下通用\",\"useEffectiveDay\":\"领取后7天内有效\",\"isRecive\":\"0\",\"couponTitle\":\"满888元减38元\",\"subTitle\":\"满888元可用\",\"addCouponMoney\":null,\"saleCouponMeetMoney\":\"888\",\"couponName\":\"优惠券\",\"recieveCouponTitle\":null},{\"backPic\":\"\",\"couponValue\":\"66\",\"couponType\":\"3\",\"recordId\":\"39227\",\"couponCode\":\"GFPDX\",\"remainNum\":null,\"startTime\":null,\"endTime\":null,\"storeLimitTips\":null,\"useRangeTips\":null,\"title\":\"线上线下均可使用\",\"useCouponTerminal\":\"2\",\"useCouponTerminalTips\":\"线上线下通用\",\"useEffectiveDay\":\"领取后7天内有效\",\"isRecive\":\"0\",\"couponTitle\":\"满1388元减66元\",\"subTitle\":\"满1388元可用\",\"addCouponMoney\":null,\"saleCouponMeetMoney\":\"1388\",\"couponName\":\"优惠券\",\"recieveCouponTitle\":null}]}"
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		lalala
+	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript">
+		$.ajax({
+			type:"get",
+			url:"../data/homedata.json",
+			async:true,
+			dataType:'json'
+		}).done(function(res){
+			console.log(res);
+		})
+	</script>
+</html>

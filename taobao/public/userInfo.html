@@ -1,0 +1,109 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <tille>个人信息</title>
+	<style type="text/css">
+        h1{
+    font-size:30px;
+    color:#930;
+    text-align:center;
+        }
+        </style>
+  </head>
+  
+  <body> 
+  
+    <h1>个人信息</h1>
+		<!--表单提交-->     	
+	 <form method="post"  action="/users/userInfo"  >
+	 	<!--$.ajax()请求-->
+	 <!--<form method="post"  action="#" onsubmit="return false" >-->
+	 	
+	 	<input type="hidden" name="action" id="action" value="editUser" />
+        <p>
+		   <lable for="username"> 用户名：</label>
+		      <input type="text"  name="userName" id="username" value=""></p>
+        <p>
+		  <lable for="phone"> 手机号：</label>
+		     <input type="text" name="phone" id="phone"></p>
+	
+	
+	    <p>
+		   级别：   <select name="powerCode" id="jibie">
+				    		<option value="1">会员</option>
+				    		<option value="2">非会员</option>
+			 		</select></p>
+		<p>
+		  <lable for="email"> 邮箱：</label>
+		     <input type="text" name="email" id="email"></p>
+		  <p>
+		  <lable for="truename"> 真实姓名：</label>
+		     <input type="text" name="trueName" id="truename"></p>
+	    <p>
+	    <p>
+		  <lable for="truename" id="createTime"> 创建时间：</label>
+		    <span id="showTime"></span>
+	    <p>
+        <input type="submit" id="edit" value="修改">
+          <input type="reset" value="清空"></p>
+     </form>
+
+  
+  </body>
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <script type="text/javascript">
+//			获取search
+		function GetQueryString(name) { 
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"); 
+			var r = window.location.search.substr(1).match(reg); 
+			if (r!=null) return (r[2]); return null; 
+		}
+		var userId=GetQueryString("userId");   
+		console.log(userId);
+		function loadUserInfo(){
+			$.ajax({
+				type:"post",
+				url:"/users/userInfo",
+				async:true,
+				dataType:'json',
+				data:{
+					action:"getUser",
+					userId:userId
+				}
+			}).done(function(res){
+				$("#username").val(res[0].userName);
+				$("#phone").val(res[0].phone);
+				$("#jibie").val(res[0].powerCode);
+				$("#email").val(res[0].email);
+				$("#truename").val(res[0].trueName);
+				$("#showTime").html(res[0].createTime);
+			});			
+		}
+		loadUserInfo()
+		
+//		$("#edit").click(function(){
+//			$.ajax({
+//				type:"post",
+//				url:"/users/userInfo",
+//				async:true,
+//				dataType:'json',
+//				data:{
+//					action:"editUser",
+//					userName:$("#username").val(),
+//					phone:$("#phone").val(),
+//					powerCode:$("#jibie").val(),
+//					email:$("#email").val(),
+//					trueName:$("#truename").val()
+//				}
+//			}).done(function(res){
+//				if(res.success){
+//					loadUserInfo()
+//				}else{
+//					alert(res.err)
+//				}
+//			});
+//		})
+  </script>
+  
+ </html>

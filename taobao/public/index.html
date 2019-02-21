@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.box>*{
+				float: left;
+			}
+			.mask{
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
+				height: 100vh;
+				background: rgba(0,0,0,0.7);
+			}
+			.mask>form{
+				margin: 30px auto;
+				padding: 20px;
+				width: 500px;
+				background: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>这是主页</h1>
+		<span id="username"></span>
+		<a href="login.html" id="tolog">登录</a>
+		<span id="editPwd">修改密码</span>
+		<span id="quit" style="cursor: pointer;">退出</span>
+		<div class="mask">
+
+			<form action="#" method="post">
+				<h1>修改密码 <span id="hidden_mask">x</span></h1>
+				
+				原密码：<input type="password" id="oldpwd" autocomplete="off"/><br />
+				新密码：<input type="password" id="newpwd" autocomplete="off"/><br />
+				确认密码：<input type="password" id="senpwd" autocomplete="off" /><br />
+				<input type="button" id="editPwdBtn" value="修改"/>
+			</form>
+		</div>
+	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="javascripts/tool.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//			获取search
+		function GetQueryString(name) { 
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)","i"); 
+			var r = window.location.search.substr(1).match(reg); 
+			if (r!=null) return (r[2]); return null; 
+		}
+		var userName=decodeURI(GetQueryString("userName"));  
+		if(userName!='null'){
+			$("#username").html(userName);
+			$("#username").show();
+			$("#quit").show();
+			
+			$("#tolog").hide();			
+		}else{
+			$("#username").hide();
+			$("#quit").hide();
+			$("#tolog").show();		
+		}
+
+		//退出按钮
+		$("#quit").click(function(){
+			$.ajax({
+				type:"get",
+				url:"/users/quit",
+				async:true,
+				dataType:'json'
+			}).done(function(res){
+				console.log(res);
+				if(res.success){
+					alert('退出成功');
+					$("#quit").hide();
+					$("#username").hide();
+					$("#tolog").show();
+					userName='';
+					
+				}
+				if(res.err){
+					alert('退出失败')
+				}
+			});
+		})
+		
+		
+		$("#editPwd").click(function(){
+			if(mytools.isLogin().success){
+					$(".mask").show();
+			}else{
+				alert('请先登录');
+				location.href='login.html'
+			}
+		})
+		$("#hidden_mask").click(function(){
+			$(".mask").hide();
+			
+		})
+		
+		//修改密码提交按钮
+		$("#editPwdBtn").click(function(){
+			if($("#newpwd").val()==$("#senpwd").val()){
+				$.ajax({
+					type:"post",
+					url:"/users/editPwd",
+					async:true,
+					dataType:'json',
+					data:{
+						oldpassword:$("#oldpwd").val(),
+						newpassword:$("#newpwd").val(),
+					}				
+				}).done(function(res){
+					console.log(res);
+					if(res.success){
+						$(".mask").hide();
+						alert('密码修改成功')
+					}else{
+						alert('密码修改失败')
+					}
+				});
+			}else{
+				alert('两次密码不一致')
+			}
+		})
+
+	</script>
+</html>

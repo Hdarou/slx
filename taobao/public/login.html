@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.formGroup{
+				margin: 20px auto;
+				padding: 20px;
+				width: 300px;
+				border: 1px solid #eee;
+				color: #333;
+			}
+			.formGroup span{
+				margin-right: 10px;
+				display: inline-block;
+				width: 60px;
+				text-align:justify;
+			}
+			.inputGroup{
+				margin: 5px 0;
+			}
+			.formGroup input{
+				padding: 5px ;
+				box-sizing: border-box;
+				width: 230px;
+				height: 30px;
+				outline: none;
+			}
+			.veri>input{
+				margin-right: 20px;
+				width: 100px;
+			}
+			.veri>canvas{
+				vertical-align: middle;
+			}
+			
+			.formGroup .reg{
+				margin: 5px auto;
+				width: 300px;
+				border: none;
+				outline: none;
+				background: #ff4400;
+				color: #fff;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="formGroup">
+			<form action="#" method="get">
+				<div class="inputGroup">
+					<span>用户名:</span><input type="text" id="uname" value="" placeholder="请输入用户名" autocomplete="on"/>
+				</div>			
+				<div class="inputGroup">
+					<span>密码:</span><input type="password" id="upwd" value="" placeholder="请输入密码" autocomplete="off" />
+				</div>
+				<div class="inputGroup veri">
+					<span>验证码:</span><input id="code" type="text" /><canvas width="100" height="30" id="c1"></canvas>
+				</div>
+				<input type="button" id="log" class="reg" value="登录"/>
+			</form>			
+		</div>
+	</body>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="javascripts/myveri.js"></script>
+	
+	<script type="text/javascript">
+		//验证码
+		regveri()
+		//点击验证码切换验证码
+		$("#c1").on('click',regveri);
+		//验证码的方法
+		var veriCode='';
+		function regveri(){
+			$.ajax({
+				type:"get",
+				url:"/users/veri",
+				async:true,
+				dataType:'json',
+				data:{
+					action:"getVeri"
+				}
+			}).done(function(res){
+				veriCode=res.veri;
+				//调用画布方法画验证码
+				myVeri(veriCode)
+			}).fail(function(err){
+				console.log(err);
+			});			
+		}
+		//登录
+		$("#log").on('click',function(){
+			//判断验证码是否正确
+			var code=$("#code").val();
+			//检验验证码
+			$.ajax({
+				type:"get",
+				url:"/users/veri",
+				async:true,
+				dataType:'json',
+				data:{
+					action:"checkVeri",
+					veri:$("#code").val()
+				}
+			}).done(function(res){
+				console.log(res);
+				if(res.sueecss){
+					checkPwd();
+				}
+				if(res.err){
+					alert(res.err)
+				}
+			}).fail(function(err){
+				console.log(err);
+			});
+			
+			//检验密码是否正确的方法
+			function checkPwd(){
+				$.ajax({
+					type:"post",
+					url:"/users/log",
+					async:true,
+					dataType:'json',
+					data:{
+						userName:$("#uname").val(),
+						password:$("#upwd").val()
+					}
+				}).done(function(res){
+					if(res.err){
+						alert(res.err)
+					}else{
+						var username=encodeURI($("#uname").val())
+						location.href="index.html?userName="+username;	
+						$("#uname").val('');
+						$("#upwd").val('');
+						$("#code").val('');	
+						
+//						location.href="userInfo.html?userId="+res[0]._id;							
+					}
+					
+				}).fail(function(err){
+					console.log(err)
+				});	
+
+
+			}
+
+		})
+	</script>
+</html>
